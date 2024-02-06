@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
+    "@welldone-software/why-did-you-render": "^8.0.1",
     "date-fns": "^3.3.1",
     "firebase": "8.2.5",
     "react": "17",
@@ -21,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "tailwind:build": "postcss src/styles/tailwind.css -o src/styles/main.css",
-  "tailwind:watch": "postcss src/styles/tailwind.css -o src/styles/main.css --watch"
+    "tailwind:watch": "postcss src/styles/tailwind.css -o src/styles/main.css --watch"
   },
   "eslintConfig": {
     "extends": [
