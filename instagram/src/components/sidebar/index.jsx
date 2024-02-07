@@ -1,4 +1,4 @@
-import React,{memo} from 'react';
+import React from 'react';
 import useUser from "../../hooks/use-user"
 import User from './user'
 import Suggestions from "./suggestions"
@@ -11,3 +11,5 @@ export default function Sidebar(){
     </div>
     )
 }
+
+
