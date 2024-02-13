@@ -8,7 +8,7 @@ export async function doesUsernameExist(username){
     .get();
     
 
-    return result.docs.map((user)=>user.data().length>0);
+    return result.docs.length > 0;
 }
 
 export async function getUserByUserId(userId){
@@ -36,30 +36,38 @@ export async function getSuggestedProfiles(userId, following) {
 
 //updateLoggedInUserFollowing, updateFollowedUserFollowers
 
-export async function updateLoggedInUserFollowing(loggedInUserDocId,profileId,isFollowingProfile) {
-    return firebase
-    .firestore
-    .collection('users')
-    .doc(loggedInUserDocId)
-    .update({
-        following: isFollowingProfile
-        ? FieldValue.arrayRemove(profileId)
-        :FieldValue.arrayUnion(profileId)
-    })
-}
-
-export async function updateFollowedUserFollowers(
-    spDocId,
-    loggedInUserDocId,
-    isFollowingProfile
-) {
-    return firebase
-    .firestore()
-    .collection('users')
-    .doc(spDocId)
-    .update({
-        following:isFollowingProfile
-        ? FieldValue.arrayRemove(loggedInUserDocId)
-        : FieldValue.arrayUnion(loggedInUserDocId)
-    })
-}
+export async function updateLoggedInUserFollowing(loggedInUserDocId, profileId, isFollowingProfile) {
+    const userRef = firebase.firestore().collection('users').doc(loggedInUserDocId);
+  
+    try {
+      const userDoc = await userRef.get();
+  
+      if (userDoc.exists) {
+        await userRef.update({
+          following: isFollowingProfile
+            ? FieldValue.arrayRemove(profileId)
+            : FieldValue.arrayUnion(profileId),
+        });
+        console.log('updateLoggedInUserFollowing success:', loggedInUserDocId, profileId, isFollowingProfile);
+      } else {
+        console.error(`updateLoggedInUserFollowing: User document with ID ${loggedInUserDocId} not found.`);
+      }
+    } catch (error) {
+      console.error('updateLoggedInUserFollowing error:', error);
+    }
+  }
+  
+  export async function updateFollowedUserFollowers(profileDocId, loggedInUserDocId, isFollowingProfile) {
+    const userRef = firebase.firestore().collection('users').doc(profileDocId);
+  
+    try {
+      await userRef.update({
+        followers: isFollowingProfile
+          ? FieldValue.arrayRemove(loggedInUserDocId)
+          : FieldValue.arrayUnion(loggedInUserDocId),
+      });
+      console.log('updateFollowedUserFollowers success:', profileDocId, loggedInUserDocId, isFollowingProfile);
+    } catch (error) {
+      console.error('updateFollowedUserFollowers error:', error);
+    }
+  }
