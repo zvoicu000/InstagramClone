@@ -112,3 +112,16 @@ export async function updateLoggedInUserFollowing(loggedInUserDocId, profileId, 
     )
     return photosWithUserDetails
   }
+
+  export async function getUserIdByUsername(username) {
+    const result = await firebase
+      .firestore()
+      .collection('users')
+      .where()
+  } 
+
+  export async function getUserPhotosByUsername(username){
+    const userId=await getUserIdByUsername(username)
+  }
+
+  //8:12
