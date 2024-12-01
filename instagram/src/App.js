@@ -5,7 +5,7 @@ import * as ROUTES from './constants/routes'
 import useAuthListener from './hooks/use-auth-listener';
 import UserContext from './context/user';
 
-import ProtectedRoute from './helpers/protected.route';
+import ProtectedRoute from './helpers/protected-route';
 import IsUserLoggedIn from './helpers/is-user-logged-in';
 
 const Login = lazy(() => import('./pages/login'));
@@ -42,4 +42,3 @@ export default function App() {
 }
 
 
-//7:20:53

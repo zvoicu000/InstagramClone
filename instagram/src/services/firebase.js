@@ -114,14 +114,53 @@ export async function updateLoggedInUserFollowing(loggedInUserDocId, profileId, 
   }
 
   export async function getUserIdByUsername(username) {
+    // Make sure the username is provided
+    if (!username) {
+      throw new Error("Username is required");
+    }
+  
+    // Query Firestore to find the user with the given username
+    const snapshot = await firebase
+      .firestore()
+      .collection('users') // 'users' collection
+      .where('username', '==', username) // Searching by the 'username' field
+      .get();
+  
+    // If no user is found, return null or an empty value
+    if (snapshot.empty) {
+      return null;
+    }
+  
+    // Get the first document in the snapshot (assuming the username is unique)
+    const user = snapshot.docs[0].data();
+  
+    // Return the user ID (assuming the field name is 'userId')
+    return user ? user.userId : null;
+  }
+  
+
+  export async function getUserPhotosByUsername(username) {
+    // Get the userId for the given username
+    const userId = await getUserIdByUsername(username);
+    
+    // Check if userId is valid
+    if (!userId) {
+      console.error("User not found for username:", username);
+      return []; // Or handle the error as needed
+    }
+  
+    // Query photos collection using userId
     const result = await firebase
       .firestore()
-      .collection('users')
-      .where()
-  } 
-
-  export async function getUserPhotosByUsername(username){
-    const userId=await getUserIdByUsername(username)
+      .collection('photos')
+      .where('userId', '==', userId)
+      .get();
+  
+    return result.docs.map((item) => ({
+      ...item.data(),
+      docId: item.id,
+    }));
   }
+  
 
   //8:12

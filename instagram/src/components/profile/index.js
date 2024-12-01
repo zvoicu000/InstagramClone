@@ -5,7 +5,7 @@ import { getUserByUsername,getUserPhotosByUsername } from '../../services/fireba
 
 
 
-export default function Profile({username}){
+export default function Profile({user}){
     const reducer=(state,newState) =>({ ...state, ...newState})
     const initialState={
         profile: {},
@@ -16,15 +16,30 @@ export default function Profile({username}){
     
     useEffect(() => {
       async function getProfileInfoAndPhotos(){
-        const [user] = await getUserByUsername(username)
-        const photos = getUserPhotosByUsername(username)
-        dispatch({profile: user, photosCollection: photos, followerCount: user.followers.length})
+        
+        const photos = await getUserPhotosByUsername(user.username)
+        //dispatch({profile: user, photosCollection: photos, followerCount: user.followers.length})
       }
-      getProfileInfoAndPhotos()
-    }, [])
-    return <><Header/></>
+      if(user.username){
+
+        getProfileInfoAndPhotos()
+      }
+    }, [user.username])
+    return <>
+    <Header/>
+    <p>Hello {user.username}</p>
+    </>
 }
 
 Profile.propTypes= {
-    username: PropTypes.string.isRequired
+    user: PropTypes.shape({
+     dateCreated: PropTypes.number.isRequired,
+     emailAdress: PropTypes.string.isRequired,
+     followers:PropTypes.array.isRequired,
+     fullName:PropTypes.string.isRequired,
+     userId:PropTypes.string.isRequired,
+     username: PropTypes.string.isRequired
+    }).isRequired
 }
+
+//8 26 01
