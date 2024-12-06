@@ -1,13 +1,15 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  future: {
+    removeDeprecatedGapUtilities: true
+  },
+  purge: {
+    content: ['./src/**/*.js', './src/**/**/*.js']
+  },
   theme: {
-    fill:(theme)=>({
+    fill: (theme) => ({
       red: theme('colors.red.primary')
     }),
-    colors:{
+    colors: {
       white: '#ffffff',
       blue: {
         medium: '#005c98'
@@ -24,9 +26,11 @@ module.exports = {
       red: {
         primary: '#ed4956'
       }
-    },
-    extend: {},
+    }
   },
-  plugins: [],
-}
-
+  variants: {
+    extend: {
+      display: ['group-hover']
+    }
+  }
+};
